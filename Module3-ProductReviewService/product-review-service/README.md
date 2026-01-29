@@ -1,12 +1,15 @@
 🛍️ Product Review Service
+
 🧾 Overview
 
 This project is a simple Spring Boot REST application.
 
 It allows users to:
-✅ Create products
+
 ✅ Add reviews to products
 ✅ View reviews of a product
+Note: Products are inserted directly into the MySQL database using SQL queries.
+There is no API for creating products in this project.
 
 The main goal of this project is to understand:
 REST API design
