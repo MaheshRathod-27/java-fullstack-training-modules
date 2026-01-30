@@ -15,16 +15,18 @@ public class InventoryService {
 
     public void reduceStock(Long productId, int quantity) {
 
-        // Simulated database stock value
+        // Temporary stock value to simulate database data
         int currentStock = 10;
 
         log.debug("Fetched current stock for product {}: {}", productId, currentStock);
         log.debug("Requested quantity for product {}: {}", productId, quantity);
 
+        // Product does not exist or stock is unavailable
         if (currentStock <= 0) {
             throw new ProductNotFoundException(productId);
         }
 
+        // Requested quantity exceeds available stock
         if (quantity > currentStock) {
             throw new InsufficientStockException(productId, quantity, currentStock);
         }
@@ -33,8 +35,7 @@ public class InventoryService {
 
         log.debug("Calculated updated stock for product {}: {}", productId, updatedStock);
 
-        // Simulate DB update here
-
+        // Placeholder for database update logic
         log.info("Stock updated successfully for product {}. New stock: {}",
                 productId, updatedStock);
     }
