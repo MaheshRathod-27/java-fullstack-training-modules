@@ -1,0 +1,60 @@
+<configuration>
+
+    <!-- Development profile: log everything to console for easy debugging -->
+    <springProfile name="dev">
+
+        <!-- Console appender for local development -->
+        <appender name="CONSOLE"
+                  class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <!-- Time, log level, class name, and message -->
+                <pattern>%d{HH:mm:ss} %-5level %logger - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Enable detailed logs in dev -->
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+    </springProfile>
+
+    <!-- Production profile: write logs to files for monitoring -->
+    <springProfile name="prod">
+
+        <!-- Rolling file appender for production logs -->
+        <appender name="FILE"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+            <!-- Current log file -->
+            <file>logs/inventory.log</file>
+
+            <!-- Create a new log file daily and keep logs for 30 days -->
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>logs/inventory-%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <!-- Timestamp, level, class name, and message -->
+                <pattern>%d %-5level %logger - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Async appender to improve performance in production -->
+        <appender name="ASYNC_FILE"
+                  class="ch.qos.logback.classic.AsyncAppender">
+            <queueSize>5000</queueSize>
+            <discardingThreshold>0</discardingThreshold>
+            <appender-ref ref="FILE"/>
+        </appender>
+
+        <!-- Log only important information in production -->
+        <root level="INFO">
+            <appender-ref ref="ASYNC_FILE"/>
+        </root>
+
+    </springProfile>
+
+</configuration>
