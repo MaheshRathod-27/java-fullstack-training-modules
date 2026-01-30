@@ -7,12 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+// Handles exceptions globally for all REST controllers
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Logger for tracking errors and warnings
     private static final Logger log =
             LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    // Handles product not found scenarios
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handleProductNotFound(ProductNotFoundException ex) {
 
@@ -23,6 +26,7 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    // Handles insufficient stock scenarios
     @ExceptionHandler(InsufficientStockException.class)
     public ResponseEntity<String> handleInsufficientStock(InsufficientStockException ex) {
 
@@ -33,6 +37,7 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    // Handles any unexpected server errors
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleUnexpectedError(Exception ex) {
 
