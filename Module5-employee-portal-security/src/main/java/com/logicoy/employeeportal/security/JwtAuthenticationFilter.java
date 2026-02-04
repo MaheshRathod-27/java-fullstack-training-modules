@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
 
+// Security filter that validates JWT tokens and sets authentication for each request
 @Component
 public class JwtAuthenticationFilter
         extends OncePerRequestFilter {
@@ -32,16 +33,20 @@ public class JwtAuthenticationFilter
                                     FilterChain chain)
             throws IOException, ServletException {
 
+        // Extract Authorization header from incoming request
         String header = req.getHeader("Authorization");
 
+        // If no JWT is present, skip authentication and continue the filter chain
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(req, res);
             return;
         }
 
+        // Remove "Bearer " prefix and parse JWT claims
         String token = header.substring(7);
         Claims claims = jwtUtil.extractClaims(token);
 
+        // Build Authentication object using username (subject) and role from JWT
         UsernamePasswordAuthenticationToken auth =
             new UsernamePasswordAuthenticationToken(
                 claims.getSubject(),
@@ -53,7 +58,10 @@ public class JwtAuthenticationFilter
                 )
             );
 
+        // Store authentication in SecurityContext for authorization checks
         SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // Continue processing the remaining filters and eventually the controller
         chain.doFilter(req, res);
     }
 }
