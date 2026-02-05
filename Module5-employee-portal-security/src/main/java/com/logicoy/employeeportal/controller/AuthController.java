@@ -27,6 +27,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final EmployeeService service;
 
+    //constructor injection
     public AuthController(AuthenticationManager authManager,
                           JwtUtil jwtUtil,
                           EmployeeService service) {

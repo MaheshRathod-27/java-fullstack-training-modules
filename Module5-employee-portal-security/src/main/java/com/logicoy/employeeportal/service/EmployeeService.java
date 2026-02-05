@@ -1,5 +1,5 @@
 package com.logicoy.employeeportal.service;
-
+import org.springframework.security.access.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.logicoy.employeeportal.dto.ProfileResponse;
 import com.logicoy.employeeportal.dto.RegisterRequest;
+import com.logicoy.employeeportal.exception.UserNotFoundException;
 import com.logicoy.employeeportal.model.Employee;
 import com.logicoy.employeeportal.model.Role;
 import com.logicoy.employeeportal.repository.EmployeeRepository;
@@ -62,6 +63,7 @@ public class EmployeeService {
         log.info("User registered successfully with username: {}",
                  req.getUsername());
     }
+    
 
     // Fetch logged-in employee profile (business logic)
    
@@ -74,13 +76,12 @@ public class EmployeeService {
                 .orElseThrow(() -> {
                     // This can happen if user was deleted after JWT was issued
                     log.error("Profile access failed - user not found: {}", username);
-                    return new RuntimeException("User not found");
+                    return new UserNotFoundException("User not found");
                 });
 
-        // Check if user account is disabled
         if (!emp.isEnabled()) {
             log.warn("Disabled user attempted to access profile: {}", username);
-            throw new RuntimeException("User account is disabled");
+            throw new AccessDeniedException("User account is disabled");
         }
 
         // Convert Employee entity to ProfileResponse DTO
