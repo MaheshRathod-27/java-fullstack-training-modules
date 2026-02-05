@@ -1,82 +1,75 @@
-Employee Portal Security – Assignment Overview
+🔐 Employee Portal Security (Spring Boot)
+📌 Overview
 
-This project implements security for an Employee Portal REST API using Spring Boot.
-It demonstrates authentication, authorization, and JWT-based stateless security.
+Employee Portal Security is a Spring Boot REST API that demonstrates JWT-based authentication and role-based authorization using stateless security (no HTTP sessions).
+It follows enterprise-level security best practices for backend applications.
 
-The system follows industry best practices for securing REST APIs without using HTTP sessions.
+🚀 Features
+-User registration with roles (EMPLOYEE / MANAGER)
+-Login using username & password
+-JWT generation on successful authentication
+-Role-based API access
+-Stateless authentication using JWT
+-Secure password hashing with BCrypt
 
-Features
+🔒 Security Design
 
-The application allows users to:
+-JWT-based stateless authentication
+-Authorization via Authorization: Bearer <token> header
 
-Register with a role (EMPLOYEE or MANAGER)
+Role-Based Access Control (RBAC):-
 
-Log in using username and password
+-EMPLOYEE → Access own profile
+-MANAGER → Access all employees
 
-Receive a JWT token on successful authentication
+DTO usage to avoid exposing entities
 
-Access APIs based on assigned roles using the JWT
+🔗 API Endpoints
+🔐 Authentication
 
-Security Design
+POST /auth/register → Register user with role
+POST /auth/login → Authenticate & receive JWT
 
-Stateless authentication using JWT
+👤 Employee Access
 
-No HTTP sessions are used
+GET /employees/profile → View own profile (EMPLOYEE)
+GET /employees → View all employees (MANAGER)
 
-Each request is authenticated via the Authorization header
+JWT Required:
+Authorization: Bearer <JWT_TOKEN>
 
-Role-based access control:
+🔁 Authentication Flow
+-User registers with credentials & role
+-User logs in with valid credentials
+-Spring Security authenticates user
+-JWT is generated and returned
+-JWT is validated on every protected request
 
-EMPLOYEE → access own profile
+🧰 Tech Stack
+-Java 17
+-Spring Boot
+-Spring Security
+-JWT
+-MySQL
+-Maven
 
-MANAGER → access all employees
+✅ Prerequisites
+-Java 17+
+-Maven
+-MySQL (local)
+-Database
+(CREATE DATABASE employee_portal;)
+⚠️ Spring Boot does not create the database automatically.
 
-Passwords are securely stored using BCrypt
+🔑 JWT Secret Configuration
 
-DTOs are used to avoid exposing database entities
+-JWT secret is not hardcoded
+-Must be set as an environment variable
+-JWT_SECRET=your_secure_secret_key(need in your system environment)
+⚠️ Application will not start without this variable.
 
-How It Works (High Level):-
-
-User registers with username, password, and role
-
-User logs in with credentials
-
-Application authenticates credentials using Spring Security
-
-A JWT token is generated and returned
-
-Client sends the JWT with every protected request
-
-JWT is validated by a security filter on each request
-
-Prerequisites->
-
-To run this project, ensure you have:-
-
-Java
-
-Maven
-
-MySQL running locally
-
-Create the database manually:
-
-CREATE DATABASE employee_portal;
-
-
-Note: Spring Boot does not create the database automatically.
-
-JWT Secret Key Requirement
-
-The JWT secret key is not hardcoded
-
-It must be provided as an environment variable
-
-The secret is used to sign and validate JWT tokens
-
-Example
-JWT_SECRET=your_own_secure_secret_key
-
-
-⚠️ Important:
-The application will not start or function correctly if the JWT secret key is missing.
+📁 Project Highlights
+-Clean layered architecture
+-Custom JWT filter
+-Role-based authorization
+-Production-style security configuration
