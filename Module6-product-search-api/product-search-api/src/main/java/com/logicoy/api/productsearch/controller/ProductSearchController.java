@@ -71,7 +71,7 @@ public class ProductSearchController {
 
         List<ProductDto> products = List.of(product);
         
-        // APPLY SORTING ONLY (demo purpose)
+        // APPLY SORTING for demo
       
         if ("priceAsc".equals(sortBy)) {
             products = products.stream()
